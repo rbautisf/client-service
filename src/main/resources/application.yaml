@@ -1,0 +1,67 @@
+server:
+  port: 9001
+  servlet:
+    context-path: /client-service
+  forward-headers-strategy: native
+
+spring:
+  thymeleaf:
+    cache: false
+  application:
+    name: client-service
+  main:
+    allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      client:
+        registration:
+          nowhere-client-oidc:
+            provider: spring
+            client-id: nowhere-client
+            client-secret: nowhere-secret
+            client-name: nowhere-client-oidc
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost/client-service/login/oauth2/code/nowhere-client-oidc"
+            scope: openid, profile
+          nowhere-client-authorization-code:
+            provider: spring
+            client-id: nowhere-client
+            client-secret: nowhere-secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost/client-service/authorized"
+            scope: message.read,message.write
+            client-name: nowhere-client-authorization-code
+          nowhere-client-client-credentials:
+            provider: spring
+            client-id: nowhere-client
+            client-secret: nowhere-secret
+            authorization-grant-type: client_credentials
+            scope: message.read,message.write
+            client-name: nowhere-client-client-credentials
+        provider:
+          spring:
+#            authorization-uri: http://localhost:9000/oauth2/authorize
+#            token-uri: http://localhost:9000/oauth2/token
+#            user-info-uri: http://localhost:9000/userinfo
+#            jwk-set-uri: http://localhost:9000/oauth2/jwks
+#            user-info-authentication-method: client_secret_basic
+#            user-name-attribute: sub
+            issuer-uri: http://localhost/auth-server
+  datasource:
+    url: jdbc:h2:mem:clientdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.boot.autoconfigure: INFO
