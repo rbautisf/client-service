@@ -32,7 +32,7 @@ dependencies {
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:bootstrap:5.2.3")
     implementation("org.webjars:popper.js:2.9.3")
-    implementation("org.webjars:jquery:3.6.4")
+    implementation("org.webjars:jquery:3.7.1")
 }
 
 application {
